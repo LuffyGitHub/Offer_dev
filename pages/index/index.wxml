@@ -1,0 +1,50 @@
+<view class="container">
+  <view class="header-animation">
+    <view class="icon-wrapper">
+      <text class="icon-text">🚀</text>
+    </view>
+  </view>
+
+  <view class="title-section">
+    <text class="main-title">职得闯关</text>
+    <text class="sub-title">求职面试闯关挑战</text>
+  </view>
+
+  <view class="desc-section">
+    <text class="desc-text">涵盖面试技巧、职场攻略等核心知识</text>
+    <text class="desc-text">三关挑战，助你斩获心仪Offer！</text>
+  </view>
+
+  <view class="features">
+    <view class="feature-item">
+      <text class="feature-emoji">📚</text>
+      <text class="feature-text">精选题库</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-emoji">🎯</text>
+      <text class="feature-text">闯关挑战</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-emoji">🏆</text>
+      <text class="feature-text">成就解锁</text>
+    </view>
+  </view>
+
+  <view class="levels-preview">
+    <view class="level-item" wx:for="{{levels}}" wx:key="id">
+      <view class="level-badge level{{item.id}}">
+        <text class="level-num">{{item.id}}</text>
+      </view>
+      <view class="level-info">
+        <text class="level-name">{{item.name}}</text>
+        <text class="level-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="start-btn" bindtap="startGame">
+    <text class="btn-text">开始闯关</text>
+  </button>
+
+  <text class="footer-text">每一次闯关，都是向梦想靠近一步</text>
+</view>
