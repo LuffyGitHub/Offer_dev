@@ -1,0 +1,71 @@
+.container { min-height: 100vh; padding: 0 0 40rpx; background: #F5F5F5; box-sizing: border-box; }
+
+.filter-tabs {
+  display: flex;
+  background: #FFF;
+  padding: 0 24rpx;
+  border-bottom: 2rpx solid #E0E0E0;
+}
+
+.filter-tab {
+  padding: 20rpx 24rpx;
+  font-size: 26rpx;
+  color: #9E9E9E;
+  position: relative;
+}
+
+.filter-tab.active { color: #00BFA5; font-weight: 600; }
+.filter-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 24rpx; right: 24rpx;
+  height: 4rpx;
+  background: #00BFA5;
+  border-radius: 2rpx;
+}
+
+.list { padding: 20rpx 24rpx; display: flex; flex-direction: column; gap: 20rpx; }
+
+.wrong-item {
+  background: #FFF;
+  padding: 28rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.wrong-question { font-size: 28rpx; color: #212121; line-height: 1.5; margin-bottom: 16rpx; font-weight: 500; }
+
+.wrong-answer { display: flex; align-items: center; gap: 8rpx; margin-bottom: 8rpx; }
+.wrong-label { font-size: 24rpx; color: #9E9E9E; }
+.wrong-value { font-size: 24rpx; font-weight: 500; }
+.wrong-value.wrong { color: #FF4D4F; }
+.wrong-value.correct { color: #52C41A; }
+
+.wrong-explain { margin-top: 12rpx; padding: 16rpx; background: #F5F5F5; border-radius: 12rpx; }
+.explain-label { font-size: 24rpx; color: #00BFA5; font-weight: 500; }
+.explain-text { font-size: 24rpx; color: #616161; line-height: 1.5; }
+
+.wrong-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16rpx; }
+.wrong-module { font-size: 20rpx; color: #00BFA5; background: #E0F7F4; padding: 4rpx 16rpx; border-radius: 20rpx; }
+.wrong-status { font-size: 20rpx; padding: 4rpx 16rpx; border-radius: 20rpx; }
+.wrong-status.unreviewed { color: #FF4D4F; background: #FFF1F0; }
+.wrong-status.reviewed { color: #FFAB00; background: #FFF8E1; }
+.wrong-status.mastered { color: #52C41A; background: #E8F8E8; }
+
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 120rpx 0; }
+.empty-icon { font-size: 80rpx; margin-bottom: 20rpx; }
+.empty-text { font-size: 28rpx; color: #9E9E9E; }
+
+.practice-btn {
+  width: 80%;
+  height: 84rpx;
+  line-height: 84rpx;
+  background: linear-gradient(135deg, #00BFA5, #00A890);
+  border-radius: 42rpx;
+  text-align: center;
+  margin: 30rpx auto 0;
+  box-shadow: 0 6rpx 24rpx rgba(0,191,165,0.3);
+  font-size: 30rpx;
+  color: #FFF;
+  font-weight: 600;
+}

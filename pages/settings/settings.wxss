@@ -1,0 +1,23 @@
+.container { min-height: 100vh; padding: 24rpx 0; background: #F5F5F5; box-sizing: border-box; }
+
+.section { background: #FFF; margin-bottom: 20rpx; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 36rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.menu-label { font-size: 28rpx; color: #212121; }
+.menu-label.danger { color: #FF4D4F; }
+
+.menu-value { font-size: 26rpx; color: #9E9E9E; }
+.menu-arrow { font-size: 36rpx; color: #9E9E9E; }
+
+.picker-value { font-size: 26rpx; color: #00BFA5; }
+
+.footer { text-align: center; padding: 40rpx 0; }
+.footer-text { font-size: 24rpx; color: #9E9E9E; display: block; margin-bottom: 8rpx; }
+.footer-copy { font-size: 20rpx; color: #E0E0E0; display: block; }

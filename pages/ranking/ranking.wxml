@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="tabs">
+    <view class="tab {{activeTab === 'total' ? 'active' : ''}}" data-tab="total" bindtap="switchTab">总榜</view>
+    <view class="tab {{activeTab === 'weekly' ? 'active' : ''}}" data-tab="weekly" bindtap="switchTab">周榜</view>
+    <view class="tab {{activeTab === 'daily' ? 'active' : ''}}" data-tab="daily" bindtap="switchTab">日榜</view>
+  </view>
+
+  <!-- 当前用户排名 -->
+  <view class="my-rank-card">
+    <text class="my-rank-label">我的排名</text>
+    <view class="my-rank-info">
+      <image class="my-rank-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo.avatarUrl}}" />
+      <text class="my-rank-name">{{userInfo.nickName}}</text>
+      <text class="my-rank-pos">第 {{myRank.position}} 名</text>
+      <text class="my-rank-score">{{myRank.score}} 分</text>
+    </view>
+    <text class="my-rank-gap" wx:if="{{myRank.gap > 0}}">距上一名还差 {{myRank.gap}} 分</text>
+  </view>
+
+  <!-- 排名列表 -->
+  <view class="rank-list">
+    <view class="rank-item {{item.isMe ? 'me' : ''}}" wx:for="{{rankList}}" wx:key="index">
+      <text class="rank-pos {{item.position <= 3 ? 'top' : ''}}">{{item.position <= 3 ? ['🥇','🥈','🥉'][item.position-1] : item.position}}</text>
+      <image class="rank-avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="rank-user">
+        <text class="rank-name">{{item.name}}</text>
+        <text class="rank-detail">{{item.grade}} · {{item.rankName}}</text>
+      </view>
+      <text class="rank-score">{{item.score}}</text>
+    </view>
+  </view>
+</view>

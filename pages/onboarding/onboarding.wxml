@@ -1,0 +1,57 @@
+<view class="container">
+  <view class="step-indicator">
+    <view class="step {{step >= 1 ? 'active' : ''}}"><text class="step-num">1</text></view>
+    <view class="step-line {{step >= 2 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 2 ? 'active' : ''}}"><text class="step-num">2</text></view>
+    <view class="step-line {{step >= 3 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 3 ? 'active' : ''}}"><text class="step-num">3</text></view>
+  </view>
+
+  <view class="step-title">{{stepTitles[step-1]}}</view>
+
+  <!-- Step 1: 基本信息 -->
+  <view class="form-section" wx:if="{{step === 1}}">
+    <view class="form-group">
+      <text class="form-label">你的年级</text>
+      <picker mode="selector" range="{{grades}}" value="{{gradeIndex}}" bindchange="onGradeChange">
+        <view class="picker-box">{{grades[gradeIndex] || '请选择'}}</view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <text class="form-label">专业类别</text>
+      <picker mode="selector" range="{{majors}}" value="{{majorIndex}}" bindchange="onMajorChange">
+        <view class="picker-box">{{majors[majorIndex] || '请选择'}}</view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <text class="form-label">目标岗位方向</text>
+      <picker mode="selector" range="{{targets}}" value="{{targetIndex}}" bindchange="onTargetChange">
+        <view class="picker-box">{{targets[targetIndex] || '请选择'}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- Step 2: 初始能力测评 -->
+  <view class="quiz-section" wx:if="{{step === 2}}">
+    <view class="quiz-header">
+      <text class="quiz-q-num">第 {{quizIndex + 1}} / {{quizQuestions.length}} 题</text>
+      <view class="quiz-progress"><view class="quiz-progress-fill" style="width: {{(quizIndex / quizQuestions.length) * 100}}%"></view></view>
+    </view>
+    <view class="quiz-question">{{currentQuiz.text}}</view>
+    <view class="quiz-options">
+      <view class="quiz-option {{quizSelected === idx ? 'selected' : ''}}" wx:for="{{currentQuiz.options}}" wx:key="index" data-idx="{{index}}" bindtap="selectQuiz">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 3: 玩法说明 -->
+  <view class="guide-section" wx:if="{{step === 3}}">
+    <view class="guide-card"><text class="guide-icon">🎯</text><text class="guide-text">闯关答题</text><text class="guide-desc">逐关挑战面试真题，提升求职能力</text></view>
+    <view class="guide-card"><text class="guide-icon">⭐</text><text class="guide-text">获得积分</text><text class="guide-desc">答对得分、连续Combo额外奖励</text></view>
+    <view class="guide-card"><text class="guide-icon">📊</text><text class="guide-text">解锁雷达图</text><text class="guide-desc">五维能力可视化，发现成长方向</text></view>
+    <view class="guide-card"><text class="guide-icon">🤝</text><text class="guide-text">分享PK</text><text class="guide-desc">与好友对战，共同进步</text></view>
+  </view>
+
+  <button class="next-btn" bindtap="nextStep">{{step === 3 ? '开始闯关！' : '下一步'}}</button>
+</view>

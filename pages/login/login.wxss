@@ -1,0 +1,85 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 48rpx 60rpx;
+  background: linear-gradient(180deg, #E0F7F4 0%, #F5F5F5 35%);
+  box-sizing: border-box;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.logo-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.app-name {
+  font-size: 52rpx;
+  font-weight: 700;
+  color: #212121;
+  letter-spacing: 4rpx;
+  display: block;
+}
+
+.app-desc {
+  font-size: 26rpx;
+  color: #616161;
+  display: block;
+  margin-top: 12rpx;
+  line-height: 1.5;
+}
+
+.features-list {
+  width: 100%;
+  margin-bottom: 60rpx;
+}
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #424242;
+}
+
+.feature-check {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #00BFA5;
+  color: #FFF;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.login-btn {
+  width: 85%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #00BFA5, #00A890);
+  border-radius: 48rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(0, 191, 165, 0.35);
+  margin-bottom: 24rpx;
+}
+
+.login-btn-text {
+  font-size: 34rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: #9E9E9E;
+}

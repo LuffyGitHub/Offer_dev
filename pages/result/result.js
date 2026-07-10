@@ -1,4 +1,4 @@
-const { levels } = require('../../data/questions')
+const { CONSTANTS } = require('../../data/constants')
 const app = getApp()
 
 Page({
@@ -8,7 +8,10 @@ Page({
     score: 0,
     total: 0,
     passed: false,
-    hasNextLevel: false
+    totalScore: 0,
+    combo: 0,
+    hasNextLevel: false,
+    rank: null
   },
 
   onLoad(options) {
@@ -16,36 +19,29 @@ Page({
     const score = parseInt(options.score) || 0
     const total = parseInt(options.total) || 0
     const passed = options.passed === 'true'
-    const levelData = levels.find(l => l.id === levelId)
-    const totalLevels = app.globalData.totalLevels
-    const hasNextLevel = levelId < totalLevels
+    const totalScore = parseInt(options.totalScore) || 0
+    const combo = parseInt(options.combo) || 0
+    const levelName = decodeURIComponent(options.levelName || '')
+    const hasNextLevel = levelId < CONSTANTS.TOTAL_LEVELS
+
+    const { getRankByScore } = require('../../data/constants')
+    const rank = getRankByScore(app.globalData.score)
 
     this.setData({
-      levelId,
-      levelName: levelData ? levelData.name : '',
-      score,
-      total,
-      passed,
-      hasNextLevel
+      levelId, levelName, score, total, passed, totalScore, combo,
+      hasNextLevel, rank
     })
   },
 
   nextLevel() {
-    const nextId = this.data.levelId + 1
-    wx.redirectTo({
-      url: `/pages/game/game?level=${nextId}`
-    })
+    wx.redirectTo({ url: `/pages/game/game?level=${this.data.levelId + 1}` })
   },
 
   retryLevel() {
-    wx.redirectTo({
-      url: `/pages/game/game?level=${this.data.levelId}`
-    })
+    wx.redirectTo({ url: `/pages/game/game?level=${this.data.levelId}` })
   },
 
   backHome() {
-    wx.reLaunch({
-      url: '/pages/index/index'
-    })
+    wx.reLaunch({ url: '/pages/index/index' })
   }
 })

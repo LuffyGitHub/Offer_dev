@@ -1,0 +1,37 @@
+<view class="container">
+  <view class="filter-tabs">
+    <view class="filter-tab {{activeFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">全部</view>
+    <view class="filter-tab {{activeFilter === 'unreviewed' ? 'active' : ''}}" data-filter="unreviewed" bindtap="switchFilter">未复习</view>
+    <view class="filter-tab {{activeFilter === 'reviewed' ? 'active' : ''}}" data-filter="reviewed" bindtap="switchFilter">已复习</view>
+    <view class="filter-tab {{activeFilter === 'mastered' ? 'active' : ''}}" data-filter="mastered" bindtap="switchFilter">已掌握</view>
+  </view>
+
+  <view class="list" wx:if="{{filteredList.length > 0}}">
+    <view class="wrong-item" wx:for="{{filteredList}}" wx:key="id">
+      <view class="wrong-question">{{item.text}}</view>
+      <view class="wrong-answer">
+        <text class="wrong-label">你的答案：</text><text class="wrong-value wrong">✗ {{item.selectedAnswer !== undefined ? item.options[item.selectedAnswer] : '未作答'}}</text>
+      </view>
+      <view class="wrong-answer correct-answer">
+        <text class="wrong-label">正确答案：</text><text class="wrong-value correct">✓ {{item.options[item.answer]}}</text>
+      </view>
+      <view class="wrong-explain" wx:if="{{item.explain}}">
+        <text class="explain-label">解析：</text>
+        <text class="explain-text">{{item.explain}}</text>
+      </view>
+      <view class="wrong-footer">
+        <text class="wrong-module">{{item.module}}</text>
+        <text class="wrong-status {{item.status || 'unreviewed'}}">{{statusText(item.status)}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">🎉</text>
+    <text class="empty-text">暂无错题，继续保持！</text>
+  </view>
+
+  <button class="practice-btn" wx:if="{{wrongList.length >= 10}}" bindtap="startPractice">
+    随机抽取10题巩固练习
+  </button>
+</view>

@@ -1,0 +1,15 @@
+<view class="container">
+  <text class="page-desc">完成指定任务解锁荣誉勋章，获取额外积分奖励</text>
+
+  <view class="badge-grid">
+    <view class="badge-card {{item.unlocked ? 'unlocked' : 'locked'}}" wx:for="{{badges}}" wx:key="id">
+      <view class="badge-icon-wrapper">
+        <text class="badge-icon">{{item.unlocked ? item.icon : '🔒'}}</text>
+      </view>
+      <text class="badge-name">{{item.name}}</text>
+      <text class="badge-desc">{{item.desc}}</text>
+      <text class="badge-reward" wx:if="{{item.unlocked}}">+{{item.reward}}积分已领取</text>
+      <text class="badge-reward locked" wx:else>奖励 +{{item.reward}}积分</text>
+    </view>
+  </view>
+</view>

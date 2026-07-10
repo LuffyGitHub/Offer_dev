@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="logo-section">
+    <view class="logo-icon">🚀</view>
+    <text class="app-name">职得闯关</text>
+    <text class="app-desc">求职面试闯关挑战，助你斩获心仪Offer</text>
+  </view>
+
+  <view class="features-list">
+    <view class="feature-row"><text class="feature-check">✓</text><text>精选题库，覆盖各大行业</text></view>
+    <view class="feature-row"><text class="feature-check">✓</text><text>闯关模式，循序渐进提升</text></view>
+    <view class="feature-row"><text class="feature-check">✓</text><text>AI模拟面试，实战演练</text></view>
+    <view class="feature-row"><text class="feature-check">✓</text><text>好友PK，趣味竞技</text></view>
+  </view>
+
+  <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="onLogin">
+    <text class="login-btn-text">微信一键登录</text>
+  </button>
+
+  <text class="agreement-text">登录即代表同意《用户协议》和《隐私政策》</text>
+</view>

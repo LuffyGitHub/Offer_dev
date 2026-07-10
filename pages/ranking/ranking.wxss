@@ -1,0 +1,67 @@
+.container { min-height: 100vh; padding: 0 0 40rpx; background: #F5F5F5; box-sizing: border-box; }
+
+.tabs {
+  display: flex;
+  background: #FFF;
+  padding: 0 36rpx;
+  border-bottom: 2rpx solid #E0E0E0;
+}
+
+.tab {
+  padding: 24rpx 32rpx;
+  font-size: 28rpx;
+  color: #9E9E9E;
+  position: relative;
+}
+
+.tab.active { color: #00BFA5; font-weight: 600; }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 32rpx; right: 32rpx;
+  height: 4rpx;
+  background: #00BFA5;
+  border-radius: 2rpx;
+}
+
+.my-rank-card {
+  background: #FFF;
+  margin: 20rpx 24rpx;
+  padding: 28rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.my-rank-label { font-size: 22rpx; color: #9E9E9E; display: block; margin-bottom: 12rpx; }
+
+.my-rank-info { display: flex; align-items: center; gap: 16rpx; }
+.my-rank-avatar { width: 72rpx; height: 72rpx; border-radius: 50%; }
+.my-rank-name { flex: 1; font-size: 28rpx; font-weight: 600; color: #212121; }
+.my-rank-pos { font-size: 30rpx; font-weight: 700; color: #00BFA5; }
+.my-rank-score { font-size: 24rpx; color: #616161; }
+
+.my-rank-gap { font-size: 22rpx; color: #FFAB00; display: block; margin-top: 8rpx; }
+
+.rank-list { padding: 0 24rpx; display: flex; flex-direction: column; gap: 12rpx; }
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #FFF;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.rank-item.me { background: #E0F7F4; border: 2rpx solid #00BFA5; }
+
+.rank-pos { width: 56rpx; font-size: 28rpx; font-weight: 700; color: #616161; text-align: center; }
+.rank-pos.top { font-size: 36rpx; }
+
+.rank-avatar { width: 56rpx; height: 56rpx; border-radius: 50%; }
+
+.rank-user { flex: 1; }
+.rank-name { font-size: 26rpx; font-weight: 500; color: #212121; display: block; }
+.rank-detail { font-size: 20rpx; color: #9E9E9E; display: block; }
+.rank-score { font-size: 28rpx; font-weight: 700; color: #00BFA5; }

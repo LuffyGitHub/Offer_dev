@@ -1,8 +1,15 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/login/login",
+    "pages/onboarding/onboarding",
     "pages/game/game",
-    "pages/result/result"
+    "pages/result/result",
+    "pages/profile/profile",
+    "pages/ranking/ranking",
+    "pages/wrong-book/wrong-book",
+    "pages/badges/badges",
+    "pages/settings/settings"
   ],
   "window": {
     "navigationBarTitleText": "职得闯关",
@@ -11,5 +18,6 @@
     "backgroundColor": "#F5F5F5"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
 }

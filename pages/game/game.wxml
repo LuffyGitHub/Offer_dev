@@ -1,46 +1,60 @@
 <view class="container">
+  <!-- Combo 特效 -->
+  <view class="combo-overlay {{comboEffect ? 'show' : ''}}" wx:if="{{comboEffect === 'super'}}"></view>
+
+  <!-- 关卡头部 -->
   <view class="level-header">
     <text class="level-title">第{{levelId}}关 · {{levelName}}</text>
     <text class="level-subtitle">{{levelSubtitle}}</text>
   </view>
 
+  <!-- 进度与计时 -->
   <view class="progress-section">
-    <view class="progress-bar">
-      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    <view class="progress-bar"><view class="progress-fill" style="width: {{progressPercent}}%"></view></view>
+    <text class="progress-text">{{currentIndex + 1}}/{{questions.length}}</text>
+    <view class="timer-box {{timerSeconds <= 10 ? 'urgent' : ''}}">
+      <text class="timer-text">{{formatTime(timerSeconds)}}</text>
     </view>
-    <text class="progress-text">{{currentIndex + 1}}/{{totalQuestions}}</text>
   </view>
 
+  <!-- 题目卡片 -->
   <view class="question-card">
     <view class="question-number">第{{currentIndex + 1}}题</view>
     <view class="question-text">{{currentQuestion.text}}</view>
   </view>
 
+  <!-- 选项 -->
   <view class="options-section">
-    <view
-      class="option-item {{optionClass(index)}}"
-      wx:for="{{currentQuestion.options}}"
-      wx:key="index"
-      data-index="{{index}}"
-      bindtap="selectOption"
-    >
-      <view class="option-radio">
-        <view class="radio-dot {{selectedIndex === index ? 'active' : ''}}"></view>
-      </view>
+    <view class="option-item {{optionClass(index)}}" wx:for="{{currentQuestion.options}}" wx:key="index" data-index="{{index}}" bindtap="selectOption" wx:if="{{!eliminatedIndexes.includes(index)}}">
+      <view class="option-radio"><view class="radio-dot {{selectedIndex === index ? 'active' : ''}}"></view></view>
       <view class="option-label">{{item}}</view>
-      <view class="option-result" wx:if="{{feedbackVisible && selectedIndex === index}}">
+      <view class="option-result" wx:if="{{feedbackVisible && (selectedIndex === index || correctIndex === index)}}">
         <text class="result-icon">{{correctIndex === index ? '✓' : '✗'}}</text>
       </view>
     </view>
+    <view class="eliminated-hint" wx:if="{{eliminatedIndexes.length > 0}}">
+      <text class="eliminated-text">已排除 {{eliminatedIndexes.length}} 个选项</text>
+    </view>
   </view>
 
+  <!-- Combo 文本 -->
+  <view class="combo-text {{comboEffect ? 'show' : ''}}" wx:if="{{comboText}}">
+    <text class="combo-label">{{comboText}}</text>
+  </view>
+
+  <!-- 反馈 -->
   <view class="feedback-section" wx:if="{{feedbackVisible}}">
     <view class="feedback-card {{isCorrect ? 'correct' : 'wrong'}}">
       <text class="feedback-icon">{{isCorrect ? '🎉 回答正确！' : '😅 回答错误'}}</text>
-      <text class="feedback-detail" wx:if="{{!isCorrect}}">正确答案是：{{currentQuestion.options[currentQuestion.answer]}}</text>
+      <text class="feedback-explain" wx:if="{{!isCorrect && currentQuestion.explain}}">{{currentQuestion.explain}}</text>
+      <text class="feedback-explain correct-answer" wx:if="{{!isCorrect}}">正确答案：{{currentQuestion.options[currentQuestion.answer]}}</text>
     </view>
-    <button class="next-btn" bindtap="nextQuestion">
-      <text class="next-btn-text">{{isLastQuestion ? '查看结果' : '下一题'}}</text>
-    </button>
+    <button class="next-btn" bindtap="nextQuestion">{{isLastQuestion ? '查看结果' : '下一题'}}</button>
+  </view>
+
+  <!-- 提示按钮 -->
+  <view class="ticket-btn" wx:if="{{!feedbackVisible && !optionsDisabled}}" bindtap="useTicket">
+    <text class="ticket-icon">💡</text>
+    <text class="ticket-text">提示 ({{ticketCount}})</text>
   </view>
 </view>

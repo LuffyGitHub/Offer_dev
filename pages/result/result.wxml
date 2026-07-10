@@ -6,31 +6,30 @@
   <text class="result-title">{{passed ? '恭喜通关！' : '继续加油！'}}</text>
   <text class="result-subtitle">{{passed ? '你已成功通过本关挑战！' : '别灰心，再来一次吧！'}}</text>
 
-  <view class="score-card">
-    <view class="score-circle {{passed ? 'passed' : 'failed'}}">
-      <text class="score-number">{{score}}</text>
-      <text class="score-divider">/</text>
-      <text class="score-total">{{total}}</text>
+  <view class="stats-card">
+    <view class="stat-item">
+      <text class="stat-value {{passed ? 'passed' : 'failed'}}">{{score}}/{{total}}</text>
+      <text class="stat-label">答题正确</text>
     </view>
-    <view class="score-detail">
-      <text class="score-label">本关得分</text>
-      <text class="score-comment">{{passed ? '表现优秀！' : '还需努力！'}}</text>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">+{{totalScore}}</text>
+      <text class="stat-label">获得积分</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{combo}}</text>
+      <text class="stat-label">最高连击</text>
     </view>
   </view>
 
   <view class="level-complete">
-    <text class="complete-text">第{{levelId}}关 · {{levelName}} 已完成</text>
+    <text class="complete-label">第{{levelId}}关 · {{levelName}}</text>
   </view>
 
   <view class="action-section">
-    <button class="action-btn primary" bindtap="nextLevel" wx:if="{{passed && hasNextLevel}}">
-      <text class="action-btn-text">进入下一关</text>
-    </button>
-    <button class="action-btn secondary" bindtap="retryLevel">
-      <text class="action-btn-text secondary-text">{{passed && !hasNextLevel ? '再来一次' : '重新挑战'}}</text>
-    </button>
-    <button class="action-btn link" bindtap="backHome">
-      <text class="action-btn-text link-text">返回首页</text>
-    </button>
+    <button class="action-btn primary" bindtap="nextLevel" wx:if="{{passed && hasNextLevel}}">进入下一关</button>
+    <button class="action-btn secondary" bindtap="retryLevel">{{passed && !hasNextLevel ? '再来一次' : '重新挑战'}}</button>
+    <button class="action-btn link" bindtap="backHome">返回首页</button>
   </view>
 </view>

@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="section">
+    <view class="menu-item">
+      <text class="menu-label">推送通知</text>
+      <switch checked="{{settings.pushEnabled}}" bindchange="togglePush" color="#00BFA5" />
+    </view>
+    <view class="menu-item" wx:if="{{settings.pushEnabled}}">
+      <text class="menu-label">推送时间</text>
+      <picker mode="time" value="{{settings.pushTime}}" bindchange="onTimeChange">
+        <view class="picker-value">{{settings.pushTime}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="menu-item">
+      <text class="menu-label">显示在排行榜</text>
+      <switch checked="{{settings.showInRank}}" bindchange="toggleRankVis" color="#00BFA5" />
+    </view>
+    <view class="menu-item">
+      <text class="menu-label">允许好友查看进度</text>
+      <switch checked="{{settings.showProgress}}" bindchange="toggleProgressVis" color="#00BFA5" />
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="menu-item" bindtap="clearData">
+      <text class="menu-label danger">清除所有数据</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="menu-item">
+      <text class="menu-label">当前版本</text>
+      <text class="menu-value">v1.0.0</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">职得闯关 - 求职面试闯关挑战</text>
+    <text class="footer-copy">© 2026 职得闯关</text>
+  </view>
+</view>

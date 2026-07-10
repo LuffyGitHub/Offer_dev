@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 个人信息 -->
+  <view class="user-card">
+    <image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo.avatarUrl}}" />
+    <text class="user-avatar-placeholder" wx:else>{{userInfo.nickName ? userInfo.nickName[0] : '?'}}</text>
+    <view class="user-detail">
+      <text class="user-name">{{userInfo.nickName || '用户'}}</text>
+      <text class="user-grade">{{userProfile.grade}} · {{userProfile.major}} · 目标:{{userProfile.target}}</text>
+      <view class="user-rank">
+        <text class="rank-icon">{{rank.icon}}</text>
+        <text class="rank-name" style="color: {{rank.color}}">{{rank.name}}</text>
+        <text class="rank-score">{{score}} 积分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 能力雷达图 -->
+  <view class="section-card">
+    <text class="section-title">求职能力雷达图</text>
+    <view class="radar-box">
+      <view class="radar-row" wx:for="{{dimensions}}" wx:key="index">
+        <text class="radar-label">{{item.name}}</text>
+        <view class="radar-bar"><view class="radar-fill" style="width: {{item.value}}%"></view></view>
+        <text class="radar-value">{{item.value}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="stats-grid">
+    <view class="stats-item" bindtap="goWrongBook">
+      <text class="stats-num">{{wrongCount}}</text>
+      <text class="stats-label">错题数</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-num">{{completedLevels}}</text>
+      <text class="stats-label">已通关数</text>
+    </view>
+    <view class="stats-item" bindtap="goBadges">
+      <text class="stats-num">{{badgeCount}}</text>
+      <text class="stats-label">勋章</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-num">{{this.totalAnswered || 0}}</text>
+      <text class="stats-label">总答题</text>
+    </view>
+  </view>
+
+  <!-- 操作入口 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goWrongBook"><text class="menu-icon">📖</text><text class="menu-text">错题本</text><text class="menu-arrow">›</text></view>
+    <view class="menu-item" bindtap="goBadges"><text class="menu-icon">🏅</text><text class="menu-text">荣誉勋章</text><text class="menu-arrow">›</text></view>
+    <view class="menu-item" bindtap="goSettings"><text class="menu-icon">⚙️</text><text class="menu-text">设置</text><text class="menu-arrow">›</text></view>
+  </view>
+</view>
