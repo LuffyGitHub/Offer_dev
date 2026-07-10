@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding: 60rpx 40rpx 40rpx;
-  background: linear-gradient(180deg, #F0F4F8 0%, #F5F7FA 40%);
+  background: linear-gradient(180deg, #E0F7F4 0%, #F5F5F5 40%);
   box-sizing: border-box;
 }
 
@@ -20,13 +20,13 @@
 }
 
 .result-icon-wrapper.passed {
-  background: linear-gradient(135deg, #52C41A, #73D13D);
-  box-shadow: 0 8rpx 40rpx rgba(82, 196, 26, 0.3);
+  background: linear-gradient(135deg, #00BFA5, #00A890);
+  box-shadow: 0 8rpx 40rpx rgba(0, 191, 165, 0.3);
 }
 
 .result-icon-wrapper.failed {
-  background: linear-gradient(135deg, #FAAD14, #FFC53D);
-  box-shadow: 0 8rpx 40rpx rgba(250, 173, 20, 0.3);
+  background: linear-gradient(135deg, #FFAB00, #E69900);
+  box-shadow: 0 8rpx 40rpx rgba(255, 171, 0, 0.3);
 }
 
 @keyframes bounceIn {
@@ -42,13 +42,13 @@
 .result-title {
   font-size: 48rpx;
   font-weight: 700;
-  color: #2C3E50;
+  color: #212121;
   margin-bottom: 8rpx;
 }
 
 .result-subtitle {
   font-size: 28rpx;
-  color: #7F8C8D;
+  color: #616161;
   margin-bottom: 40rpx;
 }
 
@@ -70,11 +70,11 @@
 }
 
 .score-circle.passed .score-number {
-  color: #52C41A;
+  color: #00BFA5;
 }
 
 .score-circle.failed .score-number {
-  color: #FAAD14;
+  color: #FFAB00;
 }
 
 .score-number {
@@ -84,12 +84,12 @@
 
 .score-divider {
   font-size: 40rpx;
-  color: #BDC3C7;
+  color: #9E9E9E;
 }
 
 .score-total {
   font-size: 40rpx;
-  color: #BDC3C7;
+  color: #9E9E9E;
   font-weight: 600;
 }
 
@@ -101,13 +101,13 @@
 
 .score-label {
   font-size: 26rpx;
-  color: #95A5A6;
+  color: #9E9E9E;
 }
 
 .score-comment {
   font-size: 34rpx;
   font-weight: 600;
-  color: #2C3E50;
+  color: #212121;
 }
 
 .level-complete {
@@ -116,7 +116,7 @@
 
 .complete-text {
   font-size: 26rpx;
-  color: #95A5A6;
+  color: #9E9E9E;
 }
 
 .action-section {
@@ -136,13 +136,13 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #4A90D9, #357ABD);
-  box-shadow: 0 6rpx 24rpx rgba(74, 144, 217, 0.3);
+  background: linear-gradient(135deg, #00BFA5, #00A890);
+  box-shadow: 0 6rpx 24rpx rgba(0, 191, 165, 0.3);
 }
 
 .action-btn.secondary {
   background: #FFFFFF;
-  border: 2rpx solid #D1D5DB;
+  border: 2rpx solid #E0E0E0;
 }
 
 .action-btn.link {
@@ -156,11 +156,11 @@
 }
 
 .action-btn-text.secondary-text {
-  color: #555;
+  color: #616161;
 }
 
 .action-btn-text.link-text {
-  color: #95A5A6;
+  color: #9E9E9E;
   font-weight: 400;
 }
 

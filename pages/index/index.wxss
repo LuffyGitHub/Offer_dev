@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding: 60rpx 40rpx 40rpx;
-  background: linear-gradient(180deg, #E8F0FE 0%, #F5F7FA 40%);
+  background: linear-gradient(180deg, #E0F7F4 0%, #F5F5F5 40%);
   box-sizing: border-box;
 }
 
@@ -16,11 +16,11 @@
   width: 160rpx;
   height: 160rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  background: linear-gradient(135deg, #00BFA5, #00A890);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 32rpx rgba(74, 144, 217, 0.3);
+  box-shadow: 0 8rpx 32rpx rgba(0, 191, 165, 0.3);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -41,14 +41,14 @@
 .main-title {
   font-size: 56rpx;
   font-weight: 700;
-  color: #2C3E50;
+  color: #212121;
   letter-spacing: 4rpx;
   display: block;
 }
 
 .sub-title {
   font-size: 30rpx;
-  color: #7F8C8D;
+  color: #616161;
   margin-top: 10rpx;
   display: block;
 }
@@ -60,7 +60,7 @@
 
 .desc-text {
   font-size: 26rpx;
-  color: #95A5A6;
+  color: #9E9E9E;
   display: block;
   line-height: 1.6;
 }
@@ -90,7 +90,7 @@
 
 .feature-text {
   font-size: 24rpx;
-  color: #555;
+  color: #616161;
   font-weight: 500;
 }
 
@@ -122,9 +122,9 @@
   flex-shrink: 0;
 }
 
-.level-badge.level1 { background: linear-gradient(135deg, #F39C12, #E67E22); }
-.level-badge.level2 { background: linear-gradient(135deg, #3498DB, #2980B9); }
-.level-badge.level3 { background: linear-gradient(135deg, #E74C3C, #C0392B); }
+.level-badge.level1 { background: linear-gradient(135deg, #00BFA5, #00A890); }
+.level-badge.level2 { background: linear-gradient(135deg, #FFAB00, #E69900); }
+.level-badge.level3 { background: linear-gradient(135deg, #26A69A, #00897B); }
 
 .level-num {
   font-size: 32rpx;
@@ -139,13 +139,13 @@
 .level-name {
   font-size: 28rpx;
   font-weight: 600;
-  color: #2C3E50;
+  color: #212121;
   display: block;
 }
 
 .level-desc {
   font-size: 24rpx;
-  color: #95A5A6;
+  color: #9E9E9E;
   margin-top: 4rpx;
   display: block;
 }
@@ -154,11 +154,11 @@
   width: 70%;
   height: 96rpx;
   line-height: 96rpx;
-  background: linear-gradient(135deg, #4A90D9, #357ABD);
+  background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 48rpx;
   text-align: center;
   margin-bottom: 30rpx;
-  box-shadow: 0 8rpx 32rpx rgba(74, 144, 217, 0.35);
+  box-shadow: 0 8rpx 32rpx rgba(0, 191, 165, 0.35);
 }
 
 .btn-text {
@@ -174,5 +174,5 @@
 
 .footer-text {
   font-size: 22rpx;
-  color: #BDC3C7;
+  color: #9E9E9E;
 }
