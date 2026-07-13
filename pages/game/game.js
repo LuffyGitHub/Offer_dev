@@ -1,6 +1,7 @@
 const { CONSTANTS } = require('../../data/constants')
 const { STORAGE_KEYS, get, set } = require('../../utils/storage')
-const { game: gameApi, wrongbook } = require('../../utils/cloud')
+const api = require('../../utils/api')
+const { getOpenid } = require('../../utils/openid')
 const app = getApp()
 
 Page({
@@ -22,16 +23,12 @@ Page({
     const levelData = Object.values(levels).find(l => l.id === levelId)
     if (!levelData) { wx.showToast({ title: '关卡不存在', icon: 'none' }); return }
 
-    const questions = levelData.questions
     this.levelData = levelData
-    this.correctCount = 0
-    this.combo = 0
-    this.maxCombo = 0
-    this.ticketCount = 0
+    this.correctCount = 0; this.combo = 0; this.maxCombo = 0; this.ticketCount = 0
 
     this.setData({
       levelId, levelName: levelData.name, levelSubtitle: levelData.subtitle,
-      questions, currentQuestion: questions[0],
+      questions: levelData.questions, currentQuestion: levelData.questions[0],
       ticketCount: get('ticketCount') || 3
     })
     this.updateProgress()
@@ -71,21 +68,17 @@ Page({
     this.clearTimer()
     const q = this.data.currentQuestion
     const correct = index === q.answer
-    let combo = this.data.combo
-    let maxCombo = this.data.maxCombo
-    let comboText = ''
-    let comboEffect = ''
+    let combo = this.data.combo, maxCombo = this.data.maxCombo
+    let comboText = '', comboEffect = ''
 
     if (correct) {
-      this.correctCount++
-      combo++
+      this.correctCount++; combo++
       if (combo > maxCombo) maxCombo = combo
       if (combo >= 5) { comboText = `Super Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_5}分`; comboEffect = 'super' }
       else if (combo >= 3) { comboText = `Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_3}分`; comboEffect = 'combo' }
       else if (combo >= 2) { comboEffect = 'combo' }
     } else {
-      combo = 0
-      this.addWrongQuestion(q)
+      combo = 0; this.addWrongQuestion(q)
     }
 
     this.setData({
@@ -115,24 +108,23 @@ Page({
       app.globalData.wrongQuestions = wrong
       set(STORAGE_KEYS.WRONG_QUESTIONS, wrong)
       try {
-        await wrongbook.add({
+        await api.wrongbook.add(getOpenid(), {
           questionId: q.id, text: q.text, options: q.options,
           answer: q.answer, module: q.module, explain: q.explain
         })
-      } catch (e) { console.warn('云保存错题失败', e) }
+      } catch (e) { console.warn('服务器保存错题失败', e) }
     }
   },
 
   nextQuestion() {
     const nextIndex = this.data.currentIndex + 1
-    const questions = this.data.questions
-    if (nextIndex >= questions.length) { this.finishLevel(); return }
+    if (nextIndex >= this.data.questions.length) { this.finishLevel(); return }
 
     const comboScore = this.getComboScore()
     if (comboScore > 0) app.addScore(comboScore)
 
     this.setData({
-      currentIndex: nextIndex, currentQuestion: questions[nextIndex],
+      currentIndex: nextIndex, currentQuestion: this.data.questions[nextIndex],
       selectedIndex: -1, correctIndex: -1, feedbackVisible: false,
       isCorrect: false, isLastQuestion: false, optionsDisabled: false,
       ticketUsed: false, eliminatedIndexes: [], comboText: ''
@@ -142,46 +134,39 @@ Page({
   },
 
   getComboScore() {
-    const combo = this.data.combo
-    if (combo >= 5) return CONSTANTS.SCORE_PER_COMBO_5
-    if (combo >= 3) return CONSTANTS.SCORE_PER_COMBO_3
+    const c = this.data.combo
+    if (c >= 5) return CONSTANTS.SCORE_PER_COMBO_5
+    if (c >= 3) return CONSTANTS.SCORE_PER_COMBO_3
     return 0
   },
 
   updateProgress() {
-    const total = this.data.questions.length
-    const current = this.data.currentIndex
-    const percent = total > 0 ? (current / total) * 100 : 0
-    this.setData({ progressPercent: percent, isLastQuestion: current + 1 >= total })
+    const t = this.data.questions.length
+    const c = this.data.currentIndex
+    this.setData({ progressPercent: t > 0 ? (c / t) * 100 : 0, isLastQuestion: c + 1 >= t })
   },
 
   async finishLevel() {
     this.clearTimer()
     const passed = this.correctCount >= CONSTANTS.PASS_SCORE
-    const baseScore = this.correctCount * CONSTANTS.SCORE_PER_CORRECT
-    const bonusScore = passed ? CONSTANTS.LEVEL_COMPLETE_BONUS : 0
-    const comboScore = this.getComboScore()
-    const totalScore = baseScore + bonusScore + comboScore
+    const totalScore = this.correctCount * CONSTANTS.SCORE_PER_CORRECT
+      + (passed ? CONSTANTS.LEVEL_COMPLETE_BONUS : 0) + this.getComboScore()
 
     app.addScore(totalScore)
 
     const progress = app.globalData.levelProgress || {}
-    progress[this.data.levelId] = {
-      levelId: this.data.levelId,
-      passed, score: this.correctCount,
-      total: this.data.questions.length,
-      stars: this.correctCount, combo: this.maxCombo
+    const record = {
+      levelId: this.data.levelId, passed, score: this.correctCount,
+      total: this.data.questions.length, stars: this.correctCount, combo: this.maxCombo
     }
+    progress[this.data.levelId] = record
     app.globalData.levelProgress = progress
     set(STORAGE_KEYS.LEVEL_PROGRESS, progress)
 
-    try {
-      await gameApi.saveProgress(progress[this.data.levelId])
-    } catch (e) { console.warn('云保存进度失败', e) }
+    try { await api.game.saveProgress(getOpenid(), record) } catch (e) { console.warn('服务器保存进度失败', e) }
 
     if (this.data.levelId === 1) {
-      const isNew = app.unlockBadge('first_level')
-      if (isNew) wx.showToast({ title: '解锁勋章：初入职场', icon: 'success' })
+      if (app.unlockBadge('first_level')) wx.showToast({ title: '解锁勋章：初入职场', icon: 'success' })
     }
 
     wx.redirectTo({

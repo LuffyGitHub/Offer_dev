@@ -1,5 +1,6 @@
 const { STORAGE_KEYS, set } = require('../../utils/storage')
-const { user } = require('../../utils/cloud')
+const api = require('../../utils/api')
+const { getOpenid } = require('../../utils/openid')
 const app = getApp()
 
 Page({
@@ -11,24 +12,28 @@ Page({
 
       wx.showLoading({ title: '登录中...' })
 
-      user.login(userInfo).then(cloudUser => {
+      const openid = getOpenid()
+      api.user.login(openid, userInfo.nickName, userInfo.avatarUrl).then(cloudUser => {
         wx.hideLoading()
         if (cloudUser) {
           app.globalData.score = cloudUser.score || 0
           app.globalData.rankName = cloudUser.rankName || '青铜'
         }
-
         if (!app.isOnboarded()) {
           wx.redirectTo({ url: '/pages/onboarding/onboarding' })
         } else {
-          app.syncFromCloud().then(() => {
+          app.syncFromServer().then(() => {
             wx.reLaunch({ url: '/pages/index/index' })
           })
         }
       }).catch(err => {
         wx.hideLoading()
-        wx.showToast({ title: '登录失败', icon: 'none' })
-        console.error(err)
+        wx.showToast({ title: '服务器未连接，使用本地模式', icon: 'none' })
+        if (!app.isOnboarded()) {
+          wx.redirectTo({ url: '/pages/onboarding/onboarding' })
+        } else {
+          wx.reLaunch({ url: '/pages/index/index' })
+        }
       })
     } else {
       wx.showToast({ title: '需要授权才能使用', icon: 'none' })

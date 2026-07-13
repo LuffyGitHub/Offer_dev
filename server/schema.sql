@@ -1,0 +1,100 @@
+-- 创建数据库
+CREATE DATABASE IF NOT EXISTS offer_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE offer_dev;
+
+-- 用户表
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL UNIQUE,
+  nick_name VARCHAR(64) DEFAULT '',
+  avatar_url VARCHAR(512) DEFAULT '',
+  score INT DEFAULT 0,
+  rank_name VARCHAR(16) DEFAULT '青铜',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_openid (openid),
+  INDEX idx_score (score DESC)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 用户画像表
+CREATE TABLE IF NOT EXISTS user_profiles (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL UNIQUE,
+  grade VARCHAR(16) DEFAULT '',
+  major VARCHAR(32) DEFAULT '',
+  target VARCHAR(32) DEFAULT '',
+  initial_level INT DEFAULT 1,
+  quiz_score INT DEFAULT 0,
+  onboarded TINYINT(1) DEFAULT 0,
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_openid (openid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 关卡进度表
+CREATE TABLE IF NOT EXISTS level_progress (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL,
+  level_id INT NOT NULL,
+  passed TINYINT(1) DEFAULT 0,
+  score INT DEFAULT 0,
+  total INT DEFAULT 0,
+  stars INT DEFAULT 0,
+  combo INT DEFAULT 0,
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_openid_level (openid, level_id),
+  INDEX idx_openid (openid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 错题本表
+CREATE TABLE IF NOT EXISTS wrong_questions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL,
+  question_id INT NOT NULL,
+  text TEXT,
+  options JSON,
+  answer INT DEFAULT 0,
+  module VARCHAR(32) DEFAULT '',
+  explain_text TEXT,
+  wrong_count INT DEFAULT 1,
+  status VARCHAR(16) DEFAULT 'unreviewed',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_openid_qid (openid, question_id),
+  INDEX idx_openid_status (openid, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 签到表
+CREATE TABLE IF NOT EXISTS sign_in (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL UNIQUE,
+  last_date DATE DEFAULT NULL,
+  streak INT DEFAULT 0,
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_openid (openid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 勋章表
+CREATE TABLE IF NOT EXISTS badges (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL,
+  badge_id VARCHAR(64) NOT NULL,
+  unlock_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_openid_badge (openid, badge_id),
+  INDEX idx_openid (openid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 用户设置表
+CREATE TABLE IF NOT EXISTS user_settings (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  openid VARCHAR(128) NOT NULL UNIQUE,
+  push_enabled TINYINT(1) DEFAULT 1,
+  push_time VARCHAR(8) DEFAULT '08:00',
+  show_in_rank TINYINT(1) DEFAULT 1,
+  show_progress TINYINT(1) DEFAULT 1,
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_openid (openid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

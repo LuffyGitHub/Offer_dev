@@ -5,5 +5,5 @@ dist/
 .DS_Store
 Thumbs.db
 project.private.config.json
-cloudfunctions/*/node_modules/
-cloudfunctions/*/package-lock.json
+server/node_modules/
+server/package-lock.json

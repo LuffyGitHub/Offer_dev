@@ -1,9 +1,0 @@
-{
-  "name": "game",
-  "version": "1.0.0",
-  "description": "闯关模块云函数",
-  "main": "index.js",
-  "dependencies": {
-    "wx-server-sdk": "latest"
-  }
-}

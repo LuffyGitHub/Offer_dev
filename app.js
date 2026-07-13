@@ -1,8 +1,10 @@
 const { STORAGE_KEYS, get, set } = require('./utils/storage')
-const { ENV } = require('./utils/cloud')
+const api = require('./utils/api')
+const { getOpenid } = require('./utils/openid')
 
 App({
   globalData: {
+    openid: '',
     userInfo: null,
     userProfile: null,
     score: 0,
@@ -11,21 +13,15 @@ App({
     levelProgress: {},
     wrongQuestions: [],
     signInData: null,
-    settings: null,
-    cloudReady: false
+    settings: null
   },
 
   onLaunch() {
-    wx.cloud.init({
-      env: ENV,
-      traceUser: true
-    })
-
-    this.globalData.cloudReady = true
+    this.globalData.openid = getOpenid()
     this.loadLocalData()
 
     if (this.isLoggedIn()) {
-      this.syncFromCloud()
+      this.syncFromServer()
     }
   },
 
@@ -40,33 +36,46 @@ App({
     this.globalData.settings = get(STORAGE_KEYS.SETTINGS) || null
   },
 
-  async syncFromCloud() {
+  async syncFromServer() {
     try {
-      const { user } = require('./utils/cloud')
-      const cloudData = await user.getUserData()
+      const openid = this.globalData.openid
+      const cloudData = await api.user.getUserData(openid)
       if (cloudData) {
         if (cloudData.user) {
           this.globalData.score = cloudData.user.score || 0
           this.globalData.rankName = cloudData.user.rankName || '青铜'
+          set(STORAGE_KEYS.SCORE, this.globalData.score)
         }
-        if (cloudData.profile) this.globalData.userProfile = cloudData.profile
-        if (cloudData.settings) this.globalData.settings = cloudData.settings
-        if (cloudData.signIn) this.globalData.signInData = cloudData.signIn
+        if (cloudData.profile) {
+          this.globalData.userProfile = cloudData.profile
+          set(STORAGE_KEYS.USER_PROFILE, cloudData.profile)
+        }
+        if (cloudData.settings) {
+          this.globalData.settings = cloudData.settings
+          set(STORAGE_KEYS.SETTINGS, cloudData.settings)
+        }
+        if (cloudData.signIn) {
+          this.globalData.signInData = cloudData.signIn
+          set(STORAGE_KEYS.SIGN_IN, cloudData.signIn)
+        }
 
         const progress = {}
-        if (cloudData.progress) {
-          cloudData.progress.forEach(p => { progress[p.levelId] = p })
+        if (cloudData.progress && cloudData.progress.length) {
+          cloudData.progress.forEach(p => { progress[p.level_id] = p })
         }
         this.globalData.levelProgress = progress
+        set(STORAGE_KEYS.LEVEL_PROGRESS, progress)
 
-        if (cloudData.badges) {
-          this.globalData.unlockedBadges = cloudData.badges.map(b => b.badgeId)
+        if (cloudData.badges && cloudData.badges.length) {
+          this.globalData.unlockedBadges = cloudData.badges.map(b => b.badge_id || b.badgeId)
+          set(STORAGE_KEYS.BADGES, this.globalData.unlockedBadges)
         }
 
         this.globalData.wrongQuestions = cloudData.wrongQuestions || []
+        set(STORAGE_KEYS.WRONG_QUESTIONS, this.globalData.wrongQuestions)
       }
     } catch (e) {
-      console.warn('云同步失败，使用本地数据', e)
+      console.warn('服务器同步失败，使用本地数据', e)
     }
   },
 
@@ -78,21 +87,25 @@ App({
     return !!this.globalData.userProfile
   },
 
-  addScore(amount) {
+  async addScore(amount) {
     this.globalData.score += amount
     set(STORAGE_KEYS.SCORE, this.globalData.score)
-
-    const { score } = require('./utils/cloud')
-    score.addScore(amount).catch(() => {})
+    try {
+      await api.score.addScore(this.globalData.openid, amount)
+    } catch (e) {
+      console.warn('积分同步失败', e)
+    }
   },
 
-  unlockBadge(badgeId) {
+  async unlockBadge(badgeId) {
     if (!this.globalData.unlockedBadges.includes(badgeId)) {
       this.globalData.unlockedBadges.push(badgeId)
       set(STORAGE_KEYS.BADGES, this.globalData.unlockedBadges)
-
-      const { score } = require('./utils/cloud')
-      score.unlockBadge(badgeId).catch(() => {})
+      try {
+        await api.score.unlockBadge(this.globalData.openid, badgeId)
+      } catch (e) {
+        console.warn('勋章同步失败', e)
+      }
       return true
     }
     return false
