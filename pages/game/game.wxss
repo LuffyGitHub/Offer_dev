@@ -123,15 +123,15 @@
 .feedback-explain.correct-answer { color: #00BFA5; font-weight: 500; }
 
 .next-btn {
-  width: 60%; height: 84rpx; line-height: 80rpx;
+  width: 60%; height: 84rpx;
   background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 42rpx;
-  text-align: center;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 6rpx 24rpx rgba(0,191,165,0.3);
   font-size: 30rpx; color: #FFF; font-weight: 600;
+  padding: 0;
 }
 
 .ticket-btn {

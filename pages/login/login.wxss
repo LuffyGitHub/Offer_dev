@@ -65,12 +65,14 @@
 .login-btn {
   width: 85%;
   height: 96rpx;
-  line-height: 92rpx;
   background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 48rpx;
-  text-align: center;
-  box-shadow: 0 8rpx 32rpx rgba(0, 191, 165, 0.35);
+  box-shadow: 0 8rpx 32rpx rgba(0,191,165,0.35);
   margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .login-btn-text {
