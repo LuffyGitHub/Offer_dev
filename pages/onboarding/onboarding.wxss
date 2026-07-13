@@ -134,7 +134,7 @@
 .next-btn {
   width: 80%;
   height: 88rpx;
-  line-height: 88rpx;
+  line-height: 84rpx;
   background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 44rpx;
   text-align: center;

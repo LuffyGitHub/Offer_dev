@@ -19,7 +19,7 @@
 .avatar-placeholder { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 40rpx; color: #FFF; font-weight: 700; }
 
 .user-meta { flex: 1; }
-.user-name { font-size: 32rpx; font-weight: 600; color: #FFF; display: block; }
+.user-name { font-size: 32rpx; font-weight: 600; color: #FFF; display: flex; align-items: center; min-height: 48rpx; }
 
 .user-rank { display: flex; align-items: center; gap: 8rpx; margin-top: 6rpx; }
 .rank-icon { font-size: 28rpx; }
@@ -91,10 +91,10 @@
 .level-badge.level2 { background: linear-gradient(135deg, #FFAB00, #E69900); }
 .level-badge.level3 { background: linear-gradient(135deg, #26A69A, #00897B); }
 
-.level-num { font-size: 32rpx; font-weight: 700; color: #FFF; }
+.level-num { font-size: 32rpx; font-weight: 700; color: #FFF; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
 
 .level-info { flex: 1; }
-.level-name { font-size: 28rpx; font-weight: 600; color: #212121; display: block; }
+.level-name { font-size: 28rpx; font-weight: 600; color: #212121; display: flex; align-items: center; min-height: 40rpx; }
 .level-desc { font-size: 22rpx; color: #9E9E9E; margin-top: 4rpx; display: block; }
 
 .level-status { font-size: 36rpx; }
@@ -102,7 +102,7 @@
 .start-btn {
   width: 70%;
   height: 96rpx;
-  line-height: 96rpx;
+  line-height: 92rpx;
   background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 48rpx;
   text-align: center;

@@ -65,7 +65,7 @@
 .login-btn {
   width: 85%;
   height: 96rpx;
-  line-height: 96rpx;
+  line-height: 92rpx;
   background: linear-gradient(135deg, #00BFA5, #00A890);
   border-radius: 48rpx;
   text-align: center;

@@ -58,7 +58,7 @@
 .action-section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20rpx; }
 
 .action-btn {
-  width: 70%; height: 84rpx; line-height: 84rpx;
+  width: 70%; height: 84rpx; line-height: 80rpx;
   border-radius: 42rpx; text-align: center;
   font-size: 30rpx; font-weight: 600;
 }
