@@ -1,6 +1,7 @@
 const { STORAGE_KEYS, set } = require('../../utils/storage')
 const { pickRandom } = require('../../utils/util')
 const { questions } = require('../../data/questions')
+const { user } = require('../../utils/cloud')
 const app = getApp()
 
 Page({
@@ -22,11 +23,7 @@ Page({
 
   onLoad() {
     const quizQuestions = pickRandom(questions, 5)
-    this.setData({
-      quizQuestions,
-      currentQuiz: quizQuestions[0] || {},
-      quizIndex: 0
-    })
+    this.setData({ quizQuestions, currentQuiz: quizQuestions[0] || {}, quizIndex: 0 })
   },
 
   onGradeChange(e) { this.setData({ gradeIndex: parseInt(e.detail.value) }) },
@@ -34,11 +31,10 @@ Page({
   onTargetChange(e) { this.setData({ targetIndex: parseInt(e.detail.value) }) },
 
   selectQuiz(e) {
-    const idx = e.currentTarget.dataset.idx
-    this.setData({ quizSelected: idx })
+    this.setData({ quizSelected: parseInt(e.currentTarget.dataset.idx) })
   },
 
-  nextStep() {
+  async nextStep() {
     if (this.data.step === 1) {
       if (this.data.gradeIndex < 0 || this.data.majorIndex < 0 || this.data.targetIndex < 0) {
         wx.showToast({ title: '请完善所有信息', icon: 'none' })
@@ -62,11 +58,13 @@ Page({
           major: this.data.majors[this.data.majorIndex],
           target: this.data.targets[this.data.targetIndex],
           initialLevel: suggestedLevel,
-          quizScore: correctCount,
-          onboarded: true
+          quizScore: correctCount
         }
-        app.globalData.userProfile = profile
-        set(STORAGE_KEYS.USER_PROFILE, profile)
+        app.globalData.userProfile = { ...profile, onboarded: true }
+        set(STORAGE_KEYS.USER_PROFILE, app.globalData.userProfile)
+
+        try { await user.saveProfile(profile) } catch (e) { console.warn('云保存失败', e) }
+
         this.setData({ step: 3 })
       } else {
         this.setData({

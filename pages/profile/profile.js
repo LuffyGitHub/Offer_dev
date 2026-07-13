@@ -3,15 +3,8 @@ const app = getApp()
 
 Page({
   data: {
-    userInfo: null,
-    userProfile: null,
-    score: 0,
-    rank: null,
-    dimensions: [],
-    wrongCount: 0,
-    completedLevels: 0,
-    badgeCount: 0,
-    totalAnswered: 0
+    userInfo: null, userProfile: null, score: 0, rank: null,
+    dimensions: [], wrongCount: 0, completedLevels: 0, badgeCount: 0
   },
 
   onShow() {
@@ -22,7 +15,6 @@ Page({
     const wrongQuestions = app.globalData.wrongQuestions || []
     const progress = app.globalData.levelProgress || {}
     const badges = app.globalData.unlockedBadges || []
-
     const completedLevels = Object.values(progress).filter(p => p.passed).length
 
     const dimData = [
@@ -34,15 +26,8 @@ Page({
     ]
 
     this.setData({
-      userInfo,
-      userProfile,
-      score,
-      rank,
-      dimensions: dimData,
-      wrongCount: wrongQuestions.length,
-      completedLevels,
-      badgeCount: badges.length,
-      totalAnswered: 0
+      userInfo, userProfile, score, rank, dimensions: dimData,
+      wrongCount: wrongQuestions.length, completedLevels, badgeCount: badges.length
     })
   },
 
@@ -50,8 +35,7 @@ Page({
     const { questions } = require('../../data/questions')
     const total = questions.filter(q => q.module === module).length || 1
     const wrong = wrongQuestions.filter(w => w.module === module).length
-    const correct = total - wrong
-    return Math.min(100, Math.round((correct / total) * 100))
+    return Math.min(100, Math.round(((total - wrong) / total) * 100))
   },
 
   goWrongBook() { wx.navigateTo({ url: '/pages/wrong-book/wrong-book' }) },

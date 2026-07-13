@@ -1,32 +1,18 @@
 const { CONSTANTS } = require('../../data/constants')
 const { STORAGE_KEYS, get, set } = require('../../utils/storage')
+const { game: gameApi, wrongbook } = require('../../utils/cloud')
 const app = getApp()
 
 Page({
   data: {
-    levelId: 1,
-    levelName: '',
-    levelSubtitle: '',
-    questions: [],
-    currentIndex: 0,
-    currentQuestion: {},
-    selectedIndex: -1,
-    correctIndex: -1,
-    feedbackVisible: false,
-    isCorrect: false,
-    isLastQuestion: false,
-    progressPercent: 0,
-    score: 0,
-    correctCount: 0,
-    combo: 0,
-    maxCombo: 0,
-    comboEffect: '',
-    comboText: '',
-    timerSeconds: CONSTANTS.TIMER_SECONDS,
-    timerRunning: false,
-    ticketCount: 0,
-    ticketUsed: false,
-    optionsDisabled: false,
+    levelId: 1, levelName: '', levelSubtitle: '',
+    questions: [], currentIndex: 0, currentQuestion: {},
+    selectedIndex: -1, correctIndex: -1,
+    feedbackVisible: false, isCorrect: false, isLastQuestion: false,
+    progressPercent: 0, score: 0, correctCount: 0,
+    combo: 0, maxCombo: 0, comboEffect: '', comboText: '',
+    timerSeconds: CONSTANTS.TIMER_SECONDS, timerRunning: false,
+    ticketCount: 0, ticketUsed: false, optionsDisabled: false,
     eliminatedIndexes: []
   },
 
@@ -34,11 +20,7 @@ Page({
     const levelId = parseInt(options.level) || 1
     const { levels } = require('../../data/questions')
     const levelData = Object.values(levels).find(l => l.id === levelId)
-
-    if (!levelData) {
-      wx.showToast({ title: '关卡不存在', icon: 'none' })
-      return
-    }
+    if (!levelData) { wx.showToast({ title: '关卡不存在', icon: 'none' }); return }
 
     const questions = levelData.questions
     this.levelData = levelData
@@ -48,39 +30,27 @@ Page({
     this.ticketCount = 0
 
     this.setData({
-      levelId,
-      levelName: levelData.name,
-      levelSubtitle: levelData.subtitle,
-      questions,
-      currentQuestion: questions[0],
+      levelId, levelName: levelData.name, levelSubtitle: levelData.subtitle,
+      questions, currentQuestion: questions[0],
       ticketCount: get('ticketCount') || 3
     })
     this.updateProgress()
     this.startTimer()
   },
 
-  onUnload() {
-    this.clearTimer()
-  },
+  onUnload() { this.clearTimer() },
 
   startTimer() {
     this.setData({ timerRunning: true, timerSeconds: CONSTANTS.TIMER_SECONDS })
     this.timer = setInterval(() => {
       const sec = this.data.timerSeconds - 1
-      if (sec <= 0) {
-        this.clearTimer()
-        this.handleTimeout()
-      } else {
-        this.setData({ timerSeconds: sec })
-      }
+      if (sec <= 0) { this.clearTimer(); this.handleTimeout() }
+      else { this.setData({ timerSeconds: sec }) }
     }, 1000)
   },
 
   clearTimer() {
-    if (this.timer) {
-      clearInterval(this.timer)
-      this.timer = null
-    }
+    if (this.timer) { clearInterval(this.timer); this.timer = null }
     this.setData({ timerRunning: false })
   },
 
@@ -88,18 +58,13 @@ Page({
     if (this.data.feedbackVisible) return
     const q = this.data.currentQuestion
     this.setData({
-      selectedIndex: -1,
-      correctIndex: q.answer,
-      feedbackVisible: true,
-      isCorrect: false,
-      optionsDisabled: true,
-      combo: 0
+      selectedIndex: -1, correctIndex: q.answer,
+      feedbackVisible: true, isCorrect: false, optionsDisabled: true, combo: 0
     })
   },
 
   selectOption(e) {
     if (this.data.feedbackVisible || this.data.optionsDisabled) return
-
     const index = e.currentTarget.dataset.index
     if (this.data.eliminatedIndexes.includes(index)) return
 
@@ -115,86 +80,62 @@ Page({
       this.correctCount++
       combo++
       if (combo > maxCombo) maxCombo = combo
-
-      if (combo >= 5) {
-        comboText = `Super Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_5}分`
-        comboEffect = 'super'
-      } else if (combo >= 3) {
-        comboText = `Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_3}分`
-        comboEffect = 'combo'
-      } else if (combo >= 2) {
-        comboEffect = 'combo'
-      }
+      if (combo >= 5) { comboText = `Super Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_5}分`; comboEffect = 'super' }
+      else if (combo >= 3) { comboText = `Combo x${combo}！额外+${CONSTANTS.SCORE_PER_COMBO_3}分`; comboEffect = 'combo' }
+      else if (combo >= 2) { comboEffect = 'combo' }
     } else {
       combo = 0
       this.addWrongQuestion(q)
     }
 
     this.setData({
-      selectedIndex: index,
-      correctIndex: q.answer,
-      feedbackVisible: true,
-      isCorrect: correct,
-      optionsDisabled: true,
-      combo,
-      maxCombo,
-      comboText,
-      comboEffect
+      selectedIndex: index, correctIndex: q.answer,
+      feedbackVisible: true, isCorrect: correct, optionsDisabled: true,
+      combo, maxCombo, comboText, comboEffect
     })
   },
 
   useTicket() {
     if (this.data.feedbackVisible || this.data.ticketUsed) return
     if (this.data.ticketCount <= 0) {
-      wx.showToast({ title: '提示券不足，可用积分兑换', icon: 'none' })
-      return
+      wx.showToast({ title: '提示券不足，可用积分兑换', icon: 'none' }); return
     }
-
     const q = this.data.currentQuestion
     const wrongIndexes = q.options.map((_, i) => i).filter(i => i !== q.answer)
-    const eliminated = wrongIndexes.slice(0, 2)
     const ticketCount = this.data.ticketCount - 1
-
     set('ticketCount', ticketCount)
-    this.setData({ eliminatedIndexes: eliminated, ticketUsed: true, ticketCount })
+    this.setData({ eliminatedIndexes: wrongIndexes.slice(0, 2), ticketUsed: true, ticketCount })
     wx.showToast({ title: '已排除2个错误选项', icon: 'success' })
   },
 
-  addWrongQuestion(q) {
+  async addWrongQuestion(q) {
     const wrong = app.globalData.wrongQuestions || []
     if (!wrong.find(w => w.id === q.id)) {
       wrong.push({ id: q.id, text: q.text, options: q.options, answer: q.answer, explain: q.explain, module: q.module })
       app.globalData.wrongQuestions = wrong
       set(STORAGE_KEYS.WRONG_QUESTIONS, wrong)
+      try {
+        await wrongbook.add({
+          questionId: q.id, text: q.text, options: q.options,
+          answer: q.answer, module: q.module, explain: q.explain
+        })
+      } catch (e) { console.warn('云保存错题失败', e) }
     }
   },
 
   nextQuestion() {
     const nextIndex = this.data.currentIndex + 1
     const questions = this.data.questions
-
-    if (nextIndex >= questions.length) {
-      this.finishLevel()
-      return
-    }
+    if (nextIndex >= questions.length) { this.finishLevel(); return }
 
     const comboScore = this.getComboScore()
-    if (comboScore > 0) {
-      app.addScore(comboScore)
-    }
+    if (comboScore > 0) app.addScore(comboScore)
 
     this.setData({
-      currentIndex: nextIndex,
-      currentQuestion: questions[nextIndex],
-      selectedIndex: -1,
-      correctIndex: -1,
-      feedbackVisible: false,
-      isCorrect: false,
-      isLastQuestion: false,
-      optionsDisabled: false,
-      ticketUsed: false,
-      eliminatedIndexes: [],
-      comboText: ''
+      currentIndex: nextIndex, currentQuestion: questions[nextIndex],
+      selectedIndex: -1, correctIndex: -1, feedbackVisible: false,
+      isCorrect: false, isLastQuestion: false, optionsDisabled: false,
+      ticketUsed: false, eliminatedIndexes: [], comboText: ''
     })
     this.updateProgress()
     this.startTimer()
@@ -211,13 +152,10 @@ Page({
     const total = this.data.questions.length
     const current = this.data.currentIndex
     const percent = total > 0 ? (current / total) * 100 : 0
-    this.setData({
-      progressPercent: percent,
-      isLastQuestion: current + 1 >= total
-    })
+    this.setData({ progressPercent: percent, isLastQuestion: current + 1 >= total })
   },
 
-  finishLevel() {
+  async finishLevel() {
     this.clearTimer()
     const passed = this.correctCount >= CONSTANTS.PASS_SCORE
     const baseScore = this.correctCount * CONSTANTS.SCORE_PER_CORRECT
@@ -229,17 +167,21 @@ Page({
 
     const progress = app.globalData.levelProgress || {}
     progress[this.data.levelId] = {
-      passed,
-      score: this.correctCount,
+      levelId: this.data.levelId,
+      passed, score: this.correctCount,
       total: this.data.questions.length,
-      stars: this.correctCount,
-      combo: this.maxCombo
+      stars: this.correctCount, combo: this.maxCombo
     }
     app.globalData.levelProgress = progress
     set(STORAGE_KEYS.LEVEL_PROGRESS, progress)
 
+    try {
+      await gameApi.saveProgress(progress[this.data.levelId])
+    } catch (e) { console.warn('云保存进度失败', e) }
+
     if (this.data.levelId === 1) {
-      app.unlockBadge('first_level')
+      const isNew = app.unlockBadge('first_level')
+      if (isNew) wx.showToast({ title: '解锁勋章：初入职场', icon: 'success' })
     }
 
     wx.redirectTo({
@@ -248,8 +190,7 @@ Page({
   },
 
   formatTime(s) {
-    const m = Math.floor(s / 60)
-    const sec = s % 60
+    const m = Math.floor(s / 60); const sec = s % 60
     return `${m}:${sec < 10 ? '0' + sec : sec}`
   },
 
